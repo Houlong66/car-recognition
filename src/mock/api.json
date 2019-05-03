@@ -1,0 +1,31 @@
+[
+  {
+    "url": "lpr_send",
+    "method": "post",
+    "input": [
+      {
+        "name": "lpr_img",
+        "type": "file",
+        "isNeed": "是",
+        "example": "1.jpg",
+        "description": "上传用户识别的图片"
+      },
+      {
+        "name": "key",
+        "type": "string",
+        "isNeed": "是",
+        "example": "1234",
+        "description": "用于验证合法用户"
+      }
+    ],
+    "output": [
+      {
+        "name": "taskid",
+        "type": "string",
+        "isNeed": "是",
+        "default": "",
+        "description": "用于获得识别结果"
+      }
+    ]
+  }
+]
