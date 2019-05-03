@@ -26,7 +26,7 @@ export default {
       // 全局函数示例
       let temp = {
         a: '123',
-        b: "456"
+        b: '456'
       }
       console.log(this.$objClone(temp))
       // api示例
@@ -34,9 +34,9 @@ export default {
     },
     login() {
       // 使用vuex登录示例
-      this.$store.dispatch("login").then(() => {
+      this.$store.dispatch('login').then(() => {
         console.log(this.$store.getters.token)
-        let redirect = decodeURIComponent(this.$route.query.redirect || "/")
+        let redirect = decodeURIComponent(this.$route.query.redirect || '/')
         this.$router.replace({ path: redirect })
       })
     }
