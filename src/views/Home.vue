@@ -177,6 +177,7 @@ export default {
   border-radius: 10px;
   padding: 10px;
   padding-bottom: 20px;
+  box-sizing: content-box;
   .upload-col:nth-of-type(1) {
     border-right: 1px solid #999999;
   }
