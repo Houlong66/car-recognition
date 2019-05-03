@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import store from '@/store'
 import localStore from 'storejs'
 import nProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 import routes from './routes'
 
@@ -13,10 +14,6 @@ const router = new Router({
   base: process.env.VUE_APP_BASE_URL,
   routes
 })
-
-if (localStore.get('?token') && store) {
-  store.commit('set_token', localStore.get('token'))
-}
 
 // 路由拦截
 router.beforeEach((to, from, next) => {

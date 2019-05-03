@@ -5,6 +5,10 @@ function resolve(dir) {
 }
 
 module.exports = {
+  lintOnSave: process.env.NODE_ENV !== 'production',
+  publicPath: process.env.VUE_APP_BASE_URL,
+  // 输出文件目录
+  outputDir: 'car-recognition',
   chainWebpack: config => {
     // svg loader
     const svgRule = config.module.rule('svg') // 找到svg-loader
