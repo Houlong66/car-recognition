@@ -10,9 +10,12 @@
       <el-row class="main-row">
         <el-col :span="12" class="upload-col">
           <el-row class="subtitle-row">原始车辆图片</el-row>
+          <!-- TODO -->
           <el-upload
             class="avatar-uploader"
-            action="http://houlong66.cn:9091/mock/13/testupload"
+            action="http://houlong66.cn:9091/mock/17/lpr_send"
+            name="lpr_img"
+            :data="uploadData"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -31,7 +34,7 @@
         <el-col :span="12" class="upload-col">
           <el-row class="subtitle-row">处理后的图片</el-row>
           <el-row class="process-row">
-            <img v-if="processImg" :src="processImg">
+            <img v-if="resultData.label_img_url" :src="resultData.label_img_url">
           </el-row>
         </el-col>
       </el-row>
@@ -40,17 +43,17 @@
         <el-row class="subtitle-row" type="flex" justify="space-between">
           <el-col :span="2">识别结果</el-col>
           <el-col :span="2" style="text-align:center">
-            <el-button type="success" size="small">导出csv</el-button>
+            <el-button type="success" size="small" @click="exportCSV">导出csv</el-button>
           </el-col>
         </el-row>
         <el-table :data="tableData">
-          <el-table-column align="center" label="编号" width="200" prop="id"></el-table-column>
+          <el-table-column align="center" label="编号" width="200" prop="car_id"></el-table-column>
           <el-table-column align="center" label="车牌图片" width="800">
             <template slot-scope="scope">
-              <img :src="scope.row.img">
+              <img :src="scope.row.car_url">
             </template>
           </el-table-column>
-          <el-table-column align="center" label="车牌号" prop="car"></el-table-column>
+          <el-table-column align="center" label="车牌号" prop="lp_result"></el-table-column>
         </el-table>
       </el-row>
       <el-dialog :visible.sync="showDialog" title="api文档" width="80%">
@@ -84,11 +87,14 @@ export default {
   data() {
     return {
       rawImg: '',
-      processImg: '',
       uploading: false,
       tableData: [],
       showDialog: false,
-      apiData: apiData
+      apiData: apiData,
+      uploadData: {
+        key: 'hard to guess'
+      },
+      resultData: {}
     }
   },
   methods: {
@@ -105,13 +111,26 @@ export default {
     handleAvatarSuccess(res, file) {
       this.tableData = []
       this.rawImg = URL.createObjectURL(file.raw)
-      this.processImg = this.rawImg
       this.uploading = false
-      this.tableData.push({
-        id: 1,
-        img: this.rawImg,
-        car: '粤A132156'
+      const tempParams = {
+        taskid: res.taskid
+      }
+      let loading = this.$loading({
+        lock: true,
+        text: '正在识别中，请稍候。。。'
       })
+      this.api.getAll(tempParams).then(res => {
+        this.resultData = res
+        this.tableData = this.resultData.recognition_results
+        loading.close()
+      }).catch()
+    },
+    exportCSV() {
+      if (!this.resultData.csv_url) {
+        this.$message.error('无法导出csv！')
+        return
+      }
+      window.location.href = this.resultData.csv_url
     }
   }
 }
