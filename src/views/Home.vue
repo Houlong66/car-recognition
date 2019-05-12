@@ -3,7 +3,7 @@
     <el-row class="title-row" type="flex" justify="space-between" align="middle">
       <el-col :span="6">车辆车牌识别系统</el-col>
       <el-col :span="3" style="text-align:end">
-        <el-button type="primary" @click="showDialog=true" size="medium">api文档</el-button>
+        <el-button type="primary" @click="routeToApi()" size="medium">api文档</el-button>
       </el-col>
     </el-row>
     <div class="container">
@@ -13,7 +13,7 @@
           <!-- TODO -->
           <el-upload
             class="avatar-uploader"
-            action="http://houlong66.cn:9091/mock/17/lpr_send"
+            action="/lpr_send"
             name="lpr_img"
             :data="uploadData"
             :show-file-list="false"
@@ -56,7 +56,7 @@
           <el-table-column align="center" label="车牌号" prop="lp_result"></el-table-column>
         </el-table>
       </el-row>
-      <el-dialog :visible.sync="showDialog" title="api文档" width="80%">
+      <!-- <el-dialog :visible.sync="showDialog" title="api文档" width="80%">
         <div v-for="(item,index) in apiData" :key="index">
           <el-row class="subtitle-row" style="font-size:18px">{{item.url}}：->{{item.method}}</el-row>
           <el-row class="subsubtitle-row">输入</el-row>
@@ -76,7 +76,7 @@
             <el-table-column label="备注" prop="description"></el-table-column>
           </el-table>
         </div>
-      </el-dialog>
+      </el-dialog> -->
     </div>
   </div>
 </template>
@@ -89,7 +89,7 @@ export default {
       rawImg: '',
       uploading: false,
       tableData: [],
-      showDialog: false,
+      // showDialog: false,
       apiData: apiData,
       uploadData: {
         key: 'hard to guess'
@@ -131,6 +131,9 @@ export default {
         return
       }
       window.location.href = this.resultData.csv_url
+    },
+    routeToApi() {
+      window.location.href = `http://${window.location.host}/apidoc`
     }
   }
 }
